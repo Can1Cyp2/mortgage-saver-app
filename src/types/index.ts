@@ -25,3 +25,5 @@ export interface MortgageResults {
     months: number;
   };
 }
+
+export type PaymentType = 'oneTime' | 'monthly';

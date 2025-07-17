@@ -4,6 +4,7 @@ export interface LoanInputs {
   interestRate: number;
   loanTermYears: number;
   extraPayment: number;
+  paymentType: 'oneTime' | 'monthly';
 }
 
 export interface MortgageResults {
@@ -45,48 +46,56 @@ export interface LoanComparisonProps {
 
 
 export const calculateMortgage = (inputs: LoanInputs): MortgageResults | null => {
-  const { loanAmount, interestRate, loanTermYears, extraPayment } = inputs;
+  let { loanAmount, interestRate, loanTermYears, extraPayment, paymentType } = inputs;
   
-  const principal = loanAmount;
   const monthlyRate = interestRate / 100 / 12;
   const totalPayments = loanTermYears * 12;
-  const extra = extraPayment || 0;
 
-  if (principal <= 0 || monthlyRate <= 0 || totalPayments <= 0) {
+  if (loanAmount <= 0 || monthlyRate <= 0 || totalPayments <= 0) {
     return null;
   }
 
-  // Calculate regular monthly payment
-  const monthlyPayment = principal * (monthlyRate * Math.pow(1 + monthlyRate, totalPayments)) / 
-                        (Math.pow(1 + monthlyRate, totalPayments) - 1);
+  // Calculate regular monthly payment and totals (without any extra payments)
+  const monthlyPaymentRegular = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, totalPayments)) / 
+                                (Math.pow(1 + monthlyRate, totalPayments) - 1);
+  const totalInterestRegular = (monthlyPaymentRegular * totalPayments) - loanAmount;
+  const totalAmountRegular = loanAmount + totalInterestRegular;
 
-  // Calculate regular loan totals
-  const totalInterestRegular = (monthlyPayment * totalPayments) - principal;
-  const totalAmountRegular = principal + totalInterestRegular;
-
-  // Calculate with extra payments
-  let balance = principal;
+  // Calculate with extra payments (one-time or monthly recurring)
+  let balanceExtra = loanAmount;
   let totalInterestExtra = 0;
   let paymentsWithExtra = 0;
 
-  while (balance > 0 && paymentsWithExtra < totalPayments) {
-    const interestPayment = balance * monthlyRate;
-    const principalPayment = monthlyPayment - interestPayment;
-    const totalPrincipalPayment = Math.min(principalPayment + extra, balance);
+  // Apply one-time payment at the start of the extra payment scenario
+  if (paymentType === 'oneTime' && extraPayment > 0) {
+    balanceExtra -= extraPayment;
+  }
+
+  const effectiveMonthlyExtraPayment = (paymentType === 'monthly') ? extraPayment : 0;
+
+  // Recalculate monthly payment based on potentially reduced principal for extra payment scenario
+  // This is crucial if a one-time payment significantly reduces the principal
+  const monthlyPaymentForExtra = balanceExtra * (monthlyRate * Math.pow(1 + monthlyRate, totalPayments)) / 
+                                 (Math.pow(1 + monthlyRate, totalPayments) - 1);
+
+  while (balanceExtra > 0 && paymentsWithExtra < totalPayments) {
+    const interestPayment = balanceExtra * monthlyRate;
+    const principalPayment = monthlyPaymentForExtra - interestPayment;
+    const totalPrincipalPayment = Math.min(principalPayment + effectiveMonthlyExtraPayment, balanceExtra);
 
     totalInterestExtra += interestPayment;
-    balance -= totalPrincipalPayment;
+    balanceExtra -= totalPrincipalPayment;
     paymentsWithExtra++;
   }
 
-  const totalAmountExtra = principal + totalInterestExtra;
+  const totalAmountExtra = loanAmount + totalInterestExtra; // Use original loanAmount for total
   const interestSavings = totalInterestRegular - totalInterestExtra;
   const timeSavings = totalPayments - paymentsWithExtra;
   const yearsSaved = Math.floor(timeSavings / 12);
   const monthsSaved = timeSavings % 12;
 
   return {
-    monthlyPayment,
+    monthlyPayment: monthlyPaymentRegular, // Monthly payment remains the same as regular for display
     totalInterestRegular,
     totalAmountRegular,
     totalInterestExtra,

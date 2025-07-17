@@ -21,30 +21,7 @@ const InputField: React.FC<InputFieldProps> = ({
   prefix,
   keyboardType = 'numeric',
   error,
-  numericFormat = 'integer',
 }) => {
-  const handleChange = (text: string) => {
-    let processedText = text;
-    if (numericFormat === 'integer') {
-      const cleaned = text.replace(/[^\d]/g, '');
-      if (cleaned === '') {
-        processedText = '';
-      } else {
-        const num = parseInt(cleaned, 10);
-        processedText = isNaN(num) ? '' : new Intl.NumberFormat('en-US').format(num);
-      }
-    } else if (numericFormat === 'decimal') {
-      const cleaned = text.replace(/[^\d.]/g, '');
-      const parts = cleaned.split('.');
-      if (parts.length > 2) {
-        processedText = `${parts[0]}.${parts.slice(1).join('')}`;
-      } else {
-        processedText = cleaned;
-      }
-    }
-    onChangeText(processedText);
-  };
-
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>
@@ -53,7 +30,7 @@ const InputField: React.FC<InputFieldProps> = ({
         <TextInput
           style={[styles.input, prefix && styles.inputWithPrefix]}
           value={value}
-          onChangeText={handleChange}
+          onChangeText={onChangeText}
           placeholder={placeholder}
           keyboardType={keyboardType}
           placeholderTextColor={Colours.text.light}

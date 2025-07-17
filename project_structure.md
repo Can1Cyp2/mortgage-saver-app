@@ -4,6 +4,7 @@
 mortgage-saver-app/
 ├── src/
 │   ├── components/
+│   │   ├── InfoButton.tsx
 │   │   ├── InputField.tsx
 │   │   ├── ResultCard.tsx
 │   │   └── LoanComparison.tsx
