@@ -64,9 +64,21 @@ const InfoButton: React.FC<InfoButtonProps> = ({ note }) => {
         <Ionicons name="information-circle-outline" size={BUTTON_ICON_WIDTH} color={Colours.text.secondary} />
       </TouchableOpacity>
       {showNote && (
-        <View style={[styles.noteContainer, notePosition]}>
-          <Text style={styles.noteText}>{note}</Text>
-        </View>
+        <>
+          {/* Invisible backdrop to close the note when tapped */}
+          <TouchableOpacity 
+            style={styles.backdrop}
+            onPress={() => setShowNote(false)}
+            activeOpacity={1}
+          />
+          <TouchableOpacity 
+            style={[styles.noteContainer, notePosition]}
+            onPress={() => setShowNote(false)}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.noteText}>{note}</Text>
+          </TouchableOpacity>
+        </>
       )}
     </View>
   );
@@ -76,6 +88,14 @@ const styles = StyleSheet.create({
   button: {
     marginLeft: 8,
     padding: 4,
+  },
+  backdrop: {
+    position: 'absolute',
+    top: -1000,
+    left: -1000,
+    right: -1000,
+    bottom: -1000,
+    zIndex: 9,
   },
   noteContainer: {
     position: 'absolute',
