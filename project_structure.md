@@ -9,18 +9,15 @@ mortgage-saver-app/
 │   │   └── LoanComparison.tsx
 │   ├── screens/
 │   │   └── MortgageCalculatorScreen.tsx
-│   ├── types/
-│   │   └── index.ts
+│   │
 │   ├── utils/
 │   │   └── mortgageCalculations.ts
 │   └── constants/
-│       └── colors.ts
+│       └── colours.ts
+│
 ├── App.tsx
+├── index.ts
 ├── package.json
 ├── tsconfig.json
-├── babel.config.js
-├── metro.config.js
-└── android/
-└── ios/
 ```
 
