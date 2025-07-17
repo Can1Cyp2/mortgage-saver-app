@@ -1,11 +1,14 @@
+import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import MortgageCalculatorScreen from './src/screens/MortgageCalculatorScreen';
+import { Colours } from './src/constants/colours';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <StatusBar style="dark" backgroundColor={Colours.background.secondary} />
+      <MortgageCalculatorScreen />
     </View>
   );
 }
@@ -13,8 +16,6 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: Colours.background.secondary,
   },
 });
