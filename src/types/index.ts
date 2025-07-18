@@ -9,12 +9,16 @@ export interface LoanComparisonProps {
       years: number;
       months: number;
     };
+    monthlyPaymentRegular: number;
+    monthlyPaymentExtra: number;
   };
-  hasExtraPayment: boolean;
+  extraPaymentType?: PaymentType;
 }
 
 export interface MortgageResults {
   monthlyPayment: number;
+  monthlyPaymentRegular: number;
+  monthlyPaymentExtra: number;
   totalInterestRegular: number;
   totalAmountRegular: number;
   totalInterestExtra: number;

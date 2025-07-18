@@ -3,13 +3,14 @@ import { View, Text, StyleSheet } from 'react-native';
 import { LoanComparisonProps } from '@/types';
 import { Colours } from '@/constants/colours';
 import { formatCurrency } from '@/utils/mortgageCalculations';
+import InfoButton from './InfoButton';
 
-const LoanComparison: React.FC<LoanComparisonProps> = ({ results, hasExtraPayment }) => {
-  const ComparisonRow = ({ 
-    label, 
-    regularValue, 
-    extraValue, 
-    backgroundColor = Colours.background.accent 
+const LoanComparison: React.FC<LoanComparisonProps> = ({ results, extraPaymentType }) => {
+  const ComparisonRow = ({
+    label,
+    regularValue,
+    extraValue,
+    backgroundColor = Colours.background.accent
   }: {
     label: string;
     regularValue: string;
@@ -20,7 +21,7 @@ const LoanComparison: React.FC<LoanComparisonProps> = ({ results, hasExtraPaymen
       <Text style={styles.rowLabel}>{label}</Text>
       <View style={styles.values}>
         <Text style={styles.regularValue}>{regularValue}</Text>
-        {extraValue && hasExtraPayment && (
+        {extraValue && extraPaymentType && (
           <Text style={styles.extraValue}>{extraValue}</Text>
         )}
       </View>
@@ -29,7 +30,10 @@ const LoanComparison: React.FC<LoanComparisonProps> = ({ results, hasExtraPaymen
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Loan Comparison</Text>
+            <View style={styles.comparisonSectionHeader}>
+              <Text style={styles.comparisonTitle}>Loan Comparison</Text>
+              <InfoButton note="Compare the total interest and total amount paid with and without extra payments." />
+            </View>
       
       <View style={styles.comparisonContainer}>
         <ComparisonRow
@@ -45,8 +49,17 @@ const LoanComparison: React.FC<LoanComparisonProps> = ({ results, hasExtraPaymen
           extraValue={formatCurrency(results.totalAmountExtra)}
           backgroundColor={Colours.background.secondary}
         />
+
+        {extraPaymentType && (
+          <ComparisonRow
+            label={extraPaymentType === 'oneTime' ? "Monthly Payment (with one-time extra payment)" : "Monthly Payment (with extra payment)"}
+            regularValue={formatCurrency(results.monthlyPaymentRegular)}
+            extraValue={formatCurrency(results.monthlyPaymentExtra)}
+            backgroundColor={Colours.background.accent}
+          />
+        )}
         
-        {hasExtraPayment && (
+        {extraPaymentType && (
           <>
             <View style={styles.savingsSection}>
               <Text style={styles.savingsTitle}>Your Savings</Text>
@@ -68,7 +81,7 @@ const LoanComparison: React.FC<LoanComparisonProps> = ({ results, hasExtraPaymen
           </>
         )}
       </View>
-    </View>
+    </View >
   );
 };
 
@@ -121,7 +134,7 @@ const styles = StyleSheet.create({
   extraValue: {
     fontSize: 14,
     fontWeight: '600',
-                    color: Colours.success,
+    color: Colours.success,
     marginTop: 2,
   },
   savingsSection: {
@@ -133,7 +146,7 @@ const styles = StyleSheet.create({
   savingsTitle: {
     fontSize: 16,
     fontWeight: '600',
-                    color: Colours.success,
+    color: Colours.success,
     marginBottom: 12,
   },
   savingsRow: {
@@ -150,6 +163,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: Colours.success,
+  },
+    comparisonSectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+    comparisonTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: Colours.text.primary,
+    marginRight: 8,
   },
 });
 

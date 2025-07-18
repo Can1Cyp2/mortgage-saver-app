@@ -9,6 +9,8 @@ export interface LoanInputs {
 
 export interface MortgageResults {
   monthlyPayment: number;
+  monthlyPaymentRegular: number;
+  monthlyPaymentExtra: number;
   totalInterestRegular: number;
   totalAmountRegular: number;
   totalInterestExtra: number;
@@ -95,7 +97,9 @@ export const calculateMortgage = (inputs: LoanInputs): MortgageResults | null =>
   const monthsSaved = timeSavings % 12;
 
   return {
-    monthlyPayment: monthlyPaymentRegular, // Monthly payment remains the same as regular for display
+    monthlyPayment: monthlyPaymentRegular,
+    monthlyPaymentRegular,
+    monthlyPaymentExtra: paymentType === 'oneTime' ? monthlyPaymentRegular + extraPayment : monthlyPaymentRegular + effectiveMonthlyExtraPayment,
     totalInterestRegular,
     totalAmountRegular,
     totalInterestExtra,

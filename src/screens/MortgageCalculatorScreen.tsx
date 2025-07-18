@@ -201,16 +201,18 @@ const MortgageCalculatorScreen: React.FC = () => {
                 <InfoButton note="This is your estimated monthly mortgage payment, including principal and interest, without any extra payments." />
               </View>
               <Text style={styles.monthlyPaymentValue}>
-                {formatCurrency(results.monthlyPayment)}
+                {formatCurrency(results.monthlyPaymentRegular)}
               </Text>
               <Text style={styles.monthlyPaymentLabel}>Regular monthly payment</Text>              
               {hasExtraPayment && (
                 <View style={styles.extraPaymentContainer}>
                   <View style={styles.separator} />
                   <Text style={styles.extraPaymentValue}>
-                    {formatCurrency(results.monthlyPayment + (paymentType === 'monthly' ? parseFloat(cleanNumber(extraPayment)) : 0))}
+                    {formatCurrency(results.monthlyPaymentExtra)}
                   </Text>
-                  <Text style={styles.extraPaymentLabel}>With extra payment</Text>
+                  <Text style={styles.extraPaymentLabel}>
+                    {paymentType === 'oneTime' ? 'With extra one-time payment' : 'With extra payment'}
+                  </Text>
                 </View>
               )}
             </View>
@@ -243,11 +245,7 @@ const MortgageCalculatorScreen: React.FC = () => {
             )}
 
             {/* Loan Comparison */}
-            <View style={styles.comparisonSectionHeader}>
-              <Text style={styles.comparisonTitle}>Loan Comparison</Text>
-              <InfoButton note="Compare the total interest and total amount paid with and without extra payments." />
-            </View>
-            <LoanComparison results={results} hasExtraPayment={hasExtraPayment} />
+            <LoanComparison results={results} extraPaymentType={hasExtraPayment ? paymentType : undefined} />
 
             </View>
         )}
@@ -433,17 +431,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-  },
-  comparisonSectionHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  comparisonTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: Colours.text.primary,
-    marginRight: 8,
   },
 });
 
