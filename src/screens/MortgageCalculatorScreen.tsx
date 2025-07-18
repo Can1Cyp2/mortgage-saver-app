@@ -101,155 +101,176 @@ const MortgageCalculatorScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView 
+      <KeyboardAvoidingView
         style={styles.keyboardAvoidingView}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
         <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-        {/* Header */}
-        <View style={styles.header}>
-          <Ionicons name="calculator" size={32} color={Colours.primary} />
-          <Text style={styles.headerTitle}>Mortgage Calculator</Text>
-          <Text style={styles.headerSubtitle}>
-            Calculate your savings with extra mortgage payments
-          </Text>
-        </View>
-
-        {/* Input Section */}
-        <View style={styles.inputSection}>
-          <View style={styles.sectionHeader}>
-            <Ionicons name="card" size={20} color={Colours.primary} />
-            <Text style={styles.sectionTitle}>Loan Details</Text>
-          </View>
-
-          <InputField
-            label="Loan Amount"
-            value={formatNumberWithCommas(loanAmount)}
-            onChangeText={(text) => setLoanAmount(cleanNumber(text))}
-            placeholder="e.g., 300,000"
-            prefix="$"
-            error={errors.loanAmount}
-            numericFormat="integer"
-          />
-
-          <InputField
-            label="Interest Rate"
-            value={interestRate}
-            onChangeText={setInterestRate}
-            placeholder="e.g., 6.5"
-            prefix="%"
-            error={errors.interestRate}
-            numericFormat="decimal"
-          />
-
-          <InputField
-            label="Loan Term (Years)"
-            value={loanTermYears}
-            onChangeText={setLoanTermYears}
-            placeholder="e.g., 30"
-            error={errors.loanTermYears}
-            numericFormat="integer"
-          />
-
-          {/* Payment Type Selector */}
-          <View style={styles.paymentTypeContainer}>
-            <TouchableOpacity
-              style={[styles.paymentTypeButton, paymentType === 'oneTime' && styles.paymentTypeButtonActive]}
-              onPress={() => setPaymentType('oneTime')}
-            >
-              <Text style={[styles.paymentTypeButtonText, paymentType === 'oneTime' && { color: Colours.background.primary }]}>One-Time Payment</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.paymentTypeButton, paymentType === 'monthly' && styles.paymentTypeButtonActive]}
-              onPress={() => setPaymentType('monthly')}
-            >
-              <Text style={[styles.paymentTypeButtonText, paymentType === 'monthly' && { color: Colours.background.primary }]}>Monthly Recurring</Text>
-            </TouchableOpacity>
-          </View>
-
-          <InputField
-            label={paymentType === 'oneTime' ? "One-Time Extra Payment" : "Extra Monthly Payment"}
-            value={formatNumberWithCommas(extraPayment)}
-            onChangeText={(text) => setExtraPayment(cleanNumber(text))}
-            placeholder={paymentType === 'oneTime' ? "e.g., 50,000" : "e.g., 100"}
-            prefix="$"
-            error={errors.extraPayment}
-            numericFormat="integer"
-          />
-
-          <TouchableOpacity style={styles.clearButton} onPress={handleClear}>
-            <Ionicons name="close-circle" size={20} color={Colours.text.secondary} />
-            <Text style={styles.clearButtonText}>Clear</Text>
-          </TouchableOpacity>
-
-          <View style={styles.tipContainer}>
-            <Ionicons name="information-circle" size={20} color={Colours.primary} />
-            <Text style={styles.tipText}>
-              <Text style={styles.tipBold}>Tip:</Text> Even small extra payments can save 
-              thousands in interest and years off your loan term.
+          {/* Header */}
+          <View style={styles.header}>
+            <Ionicons name="calculator" size={32} color={Colours.primary} />
+            <Text style={styles.headerTitle}>Mortgage Calculator</Text>
+            <Text style={styles.headerSubtitle}>
+              Calculate your savings with extra mortgage payments
             </Text>
           </View>
-        </View>
 
-        {/* Results Section */}
-        {results && (
-          <View style={styles.resultsSection}>
-            {/* Monthly Payment Card */}
-            <View style={styles.monthlyPaymentCard}>
-              <View style={styles.monthlyPaymentTitleContainer}>
-                <Text style={styles.monthlyPaymentTitle}>Monthly Payment</Text>
-                <InfoButton note="This is your estimated monthly mortgage payment, including principal and interest, without any extra payments." />
-              </View>
-              <Text style={styles.monthlyPaymentValue}>
-                {formatCurrency(results.monthlyPaymentRegular)}
+          {/* Input Section */}
+          <View style={styles.inputSection}>
+            <View style={styles.sectionHeader}>
+              <Ionicons name="card" size={20} color={Colours.primary} />
+              <Text style={styles.sectionTitle}>Loan Details</Text>
+            </View>
+
+            <InputField
+              label="Loan Amount"
+              value={formatNumberWithCommas(loanAmount)}
+              onChangeText={(text) => setLoanAmount(cleanNumber(text))}
+              placeholder="e.g., 300,000"
+              prefix="$"
+              error={errors.loanAmount}
+              numericFormat="integer"
+            />
+
+            <InputField
+              label="Interest Rate"
+              value={interestRate}
+              onChangeText={setInterestRate}
+              placeholder="e.g., 6.5"
+              prefix="%"
+              error={errors.interestRate}
+              numericFormat="decimal"
+            />
+
+            <InputField
+              label="Loan Term (Years)"
+              value={loanTermYears}
+              onChangeText={setLoanTermYears}
+              placeholder="e.g., 30"
+              error={errors.loanTermYears}
+              numericFormat="integer"
+            />
+
+            {/* Payment Type Selector */}
+            <View style={styles.paymentTypeContainer}>
+              <TouchableOpacity
+                style={[styles.paymentTypeButton, paymentType === 'oneTime' && styles.paymentTypeButtonActive]}
+                onPress={() => setPaymentType('oneTime')}
+              >
+                <Text style={[styles.paymentTypeButtonText, paymentType === 'oneTime' && { color: Colours.background.primary }]}>One-Time Payment</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.paymentTypeButton, paymentType === 'monthly' && styles.paymentTypeButtonActive]}
+                onPress={() => setPaymentType('monthly')}
+              >
+                <Text style={[styles.paymentTypeButtonText, paymentType === 'monthly' && { color: Colours.background.primary }]}>Monthly Recurring</Text>
+              </TouchableOpacity>
+            </View>
+
+            <InputField
+              label={paymentType === 'oneTime' ? "One-Time Extra Payment" : "Extra Monthly Payment"}
+              value={formatNumberWithCommas(extraPayment)}
+              onChangeText={(text) => setExtraPayment(cleanNumber(text))}
+              placeholder={paymentType === 'oneTime' ? "e.g., 50,000" : "e.g., 100"}
+              prefix="$"
+              error={errors.extraPayment}
+              numericFormat="integer"
+            />
+
+            <TouchableOpacity style={styles.clearButton} onPress={handleClear}>
+              <Ionicons name="close-circle" size={20} color={Colours.text.secondary} />
+              <Text style={styles.clearButtonText}>Clear</Text>
+            </TouchableOpacity>
+
+            <View style={styles.tipContainer}>
+              <Ionicons name="information-circle" size={20} color={Colours.primary} />
+              <Text style={styles.tipText}>
+                <Text style={styles.tipBold}>Tip:</Text> Even small extra payments can save
+                thousands in interest and years off your loan term.
               </Text>
-              <Text style={styles.monthlyPaymentLabel}>Regular monthly payment</Text>              
+            </View>
+          </View>
+
+          {/* Results Section */}
+          {results && (
+            <View style={styles.resultsSection}>
+              {/* Monthly Payment Card */}
+              <View style={styles.monthlyPaymentCard}>
+                <View style={styles.monthlyPaymentTitleContainer}>
+                  <Text style={styles.monthlyPaymentTitle}>Monthly Payment</Text>
+                  <InfoButton note="This is your estimated monthly mortgage payment, including principal and interest, without any extra payments." />
+                </View>
+                <Text style={styles.monthlyPaymentValue}>
+                  {formatCurrency(results.monthlyPaymentRegular)}
+                </Text>
+                <Text style={styles.monthlyPaymentLabel}>Regular monthly payment</Text>
+                {hasExtraPayment && (
+                  <View style={styles.extraPaymentContainer}>
+                    <View style={styles.separator} />
+                    {paymentType === 'oneTime' ? (
+                      // For one-time payments, show the upfront cost + monthly payment
+                      <View style={styles.oneTimePaymentDisplay}>
+                        <Text style={styles.oneTimeUpfrontLabel}>Upfront Payment:</Text>
+                        <Text style={styles.oneTimeUpfrontValue}>
+                          {formatCurrency(parseFloat(cleanNumber(extraPayment)))}
+                        </Text>
+                        <Text style={styles.oneTimePlusLabel}>+</Text>
+                        <Text style={styles.oneTimeMonthlyLabel}>Monthly Payment:</Text>
+                        <Text style={styles.extraPaymentValue}>
+                          {formatCurrency(results.monthlyPaymentExtra)}
+                        </Text>
+                        <Text style={styles.extraPaymentLabel}>
+                          Reduced monthly payment after upfront payment
+                        </Text>
+                      </View>
+                    ) : (
+                      // For monthly payments, show the combined monthly payment
+                      <>
+                        <Text style={styles.extraPaymentValue}>
+                          {formatCurrency(results.monthlyPaymentExtra)}
+                        </Text>
+                        <Text style={styles.extraPaymentLabel}>
+                          With extra monthly payment
+                        </Text>
+                      </>
+                    )}
+                  </View>
+                )}
+              </View>
+
+              {/* Savings Cards */}
               {hasExtraPayment && (
-                <View style={styles.extraPaymentContainer}>
-                  <View style={styles.separator} />
-                  <Text style={styles.extraPaymentValue}>
-                    {formatCurrency(results.monthlyPaymentExtra)}
-                  </Text>
-                  <Text style={styles.extraPaymentLabel}>
-                    {paymentType === 'oneTime' ? 'With extra one-time payment' : 'With extra payment'}
-                  </Text>
+                <View style={styles.savingsCards}>
+                  <View style={styles.savingsCardHeader}>
+                    <ResultCard
+                      title="Interest Savings"
+                      value={formatCurrency(results.interestSavings)}
+                      subtitle="Total interest saved over loan term"
+                      color={Colours.success}
+                      icon="trending-down"
+                    />
+                    <InfoButton note="This is the total amount of interest you save by making extra payments compared to only making regular payments." />
+                  </View>
+
+                  <View style={styles.savingsCardHeader}>
+                    <ResultCard
+                      title="Time Savings"
+                      value={`${results.timeSavings.years}y ${results.timeSavings.months}m`}
+                      subtitle="Loan paid off earlier"
+                      color={Colours.accent}
+                      icon="time"
+                    />
+                    <InfoButton note="This is the amount of time (years and months) you save on your loan term by making extra payments." />
+                  </View>
                 </View>
               )}
-            </View>
 
-            {/* Savings Cards */}
-            {hasExtraPayment && (
-              <View style={styles.savingsCards}>
-                <View style={styles.savingsCardHeader}>
-                  <ResultCard
-                    title="Interest Savings"
-                    value={formatCurrency(results.interestSavings)}
-                    subtitle="Total interest saved over loan term"
-                    color={Colours.success}
-                    icon="trending-down"
-                  />
-                  <InfoButton note="This is the total amount of interest you save by making extra payments compared to only making regular payments." />
-                </View>
-                
-                <View style={styles.savingsCardHeader}>
-                  <ResultCard
-                    title="Time Savings"
-                    value={`${results.timeSavings.years}y ${results.timeSavings.months}m`}
-                    subtitle="Loan paid off earlier"
-                    color={Colours.accent}
-                    icon="time"
-                  />
-                  <InfoButton note="This is the amount of time (years and months) you save on your loan term by making extra payments." />
-                </View>
-              </View>
-            )}
-
-            {/* Loan Comparison */}
-            <LoanComparison results={results} extraPaymentType={hasExtraPayment ? paymentType : undefined} />
+              {/* Loan Comparison */}
+              <LoanComparison results={results} extraPaymentType={hasExtraPayment ? paymentType : undefined} />
 
             </View>
-        )}
-      </ScrollView>
+          )}
+        </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -431,6 +452,30 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  oneTimePaymentDisplay: {
+    alignItems: 'center',
+  },
+  oneTimeUpfrontLabel: {
+    fontSize: 12,
+    color: Colours.text.secondary,
+    marginBottom: 4,
+  },
+  oneTimeUpfrontValue: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: Colours.accent,
+    marginBottom: 8,
+  },
+  oneTimePlusLabel: {
+    fontSize: 16,
+    color: Colours.text.secondary,
+    marginBottom: 8,
+  },
+  oneTimeMonthlyLabel: {
+    fontSize: 12,
+    color: Colours.text.secondary,
+    marginBottom: 4,
   },
 });
 

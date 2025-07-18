@@ -1,3 +1,5 @@
+// Updated LoanComparison component
+
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { LoanComparisonProps } from '@/types';
@@ -30,10 +32,10 @@ const LoanComparison: React.FC<LoanComparisonProps> = ({ results, extraPaymentTy
 
   return (
     <View style={styles.container}>
-            <View style={styles.comparisonSectionHeader}>
-              <Text style={styles.comparisonTitle}>Loan Comparison</Text>
-              <InfoButton note="Compare the total interest and total amount paid with and without extra payments." />
-            </View>
+      <View style={styles.comparisonSectionHeader}>
+        <Text style={styles.comparisonTitle}>Loan Comparison</Text>
+        <InfoButton note="Compare the total interest and total amount paid with and without extra payments." />
+      </View>
       
       <View style={styles.comparisonContainer}>
         <ComparisonRow
@@ -44,7 +46,7 @@ const LoanComparison: React.FC<LoanComparisonProps> = ({ results, extraPaymentTy
         />
         
         <ComparisonRow
-          label="Total Amount"
+          label={extraPaymentType === 'oneTime' ? "Total Amount (including upfront payment)" : "Total Amount"}
           regularValue={formatCurrency(results.totalAmountRegular)}
           extraValue={formatCurrency(results.totalAmountExtra)}
           backgroundColor={Colours.background.secondary}
@@ -52,7 +54,7 @@ const LoanComparison: React.FC<LoanComparisonProps> = ({ results, extraPaymentTy
 
         {extraPaymentType && (
           <ComparisonRow
-            label={extraPaymentType === 'oneTime' ? "Monthly Payment (with one-time extra payment)" : "Monthly Payment (with extra payment)"}
+            label={extraPaymentType === 'oneTime' ? "Monthly Payment (after upfront payment)" : "Monthly Payment (with extra payment)"}
             regularValue={formatCurrency(results.monthlyPaymentRegular)}
             extraValue={formatCurrency(results.monthlyPaymentExtra)}
             backgroundColor={Colours.background.accent}
@@ -81,7 +83,7 @@ const LoanComparison: React.FC<LoanComparisonProps> = ({ results, extraPaymentTy
           </>
         )}
       </View>
-    </View >
+    </View>
   );
 };
 
@@ -164,12 +166,12 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: Colours.success,
   },
-    comparisonSectionHeader: {
+  comparisonSectionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 16,
   },
-    comparisonTitle: {
+  comparisonTitle: {
     fontSize: 18,
     fontWeight: '600',
     color: Colours.text.primary,
