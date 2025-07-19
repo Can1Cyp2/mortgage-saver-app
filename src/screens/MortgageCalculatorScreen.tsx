@@ -36,7 +36,8 @@ const MortgageCalculatorScreen: React.FC = () => {
   const [interestRate, setInterestRate] = useState('6.5');
   const [loanTermYears, setLoanTermYears] = useState('30');
   const [extraPayment, setExtraPayment] = useState('0');
-  const [paymentType, setPaymentType] = useState<'oneTime' | 'monthly'>('oneTime'); // New state for payment type
+  const [paymentType, setPaymentType] = useState<'oneTime' | 'monthly'>('oneTime');
+  const [oneTimePaymentStrategy, setOneTimePaymentStrategy] = useState<'reducedPayment' | 'shortenedTerm'>('shortenedTerm');
   const [results, setResults] = useState<MortgageResults | null>(null);
   const [errors, setErrors] = useState({
     loanAmount: '',
@@ -71,7 +72,7 @@ const MortgageCalculatorScreen: React.FC = () => {
       interestRate: parseFloat(interestRate),
       loanTermYears: parseFloat(loanTermYears),
       extraPayment: parseFloat(cleanNumber(extraPayment)),
-      paymentType: paymentType, // Pass paymentType to calculation
+      paymentType: paymentType,
     };
 
     const calculatedResults = calculateMortgage(inputs);
@@ -83,7 +84,7 @@ const MortgageCalculatorScreen: React.FC = () => {
     setInterestRate('');
     setLoanTermYears('');
     setExtraPayment('');
-    setPaymentType('oneTime'); // Reset payment type to default
+    setPaymentType('oneTime');
     setResults(null);
     setErrors({
       loanAmount: '',
@@ -95,7 +96,7 @@ const MortgageCalculatorScreen: React.FC = () => {
 
   useEffect(() => {
     handleCalculation();
-  }, [loanAmount, interestRate, loanTermYears, extraPayment, paymentType]); // Add paymentType to dependencies
+  }, [loanAmount, interestRate, loanTermYears, extraPayment, paymentType]);
 
   const hasExtraPayment = parseFloat(cleanNumber(extraPayment)) > 0;
 
@@ -151,6 +152,17 @@ const MortgageCalculatorScreen: React.FC = () => {
               numericFormat="integer"
             />
 
+            <View style={styles.sectionHeader}>
+              <Ionicons name="add-circle" size={20} color={Colours.primary} />
+              <Text style={styles.sectionTitle}>Extra Payments</Text>
+              <InfoButton 
+                note={paymentType === 'oneTime' 
+                  ? "Your one-time payment directly reduces your loan principal. Since your monthly payment stays the same, more of it pays down the principal each month, accelerating your payoff and saving you more than just a single month's payment."
+                  : "Adding extra to your monthly payment accelerates principal reduction. This means less interest accrues each month, and your loan is paid off significantly faster, saving you thousands in interest over the loan's term."
+                }
+              />
+            </View>
+
             {/* Payment Type Selector */}
             <View style={styles.paymentTypeContainer}>
               <TouchableOpacity
@@ -177,6 +189,8 @@ const MortgageCalculatorScreen: React.FC = () => {
               numericFormat="integer"
             />
 
+            {/* One-Time Payment Strategy Selector - REMOVED because it's not realistic */}
+
             <TouchableOpacity style={styles.clearButton} onPress={handleClear}>
               <Ionicons name="close-circle" size={20} color={Colours.text.secondary} />
               <Text style={styles.clearButtonText}>Clear</Text>
@@ -198,39 +212,38 @@ const MortgageCalculatorScreen: React.FC = () => {
               <View style={styles.monthlyPaymentCard}>
                 <View style={styles.monthlyPaymentTitleContainer}>
                   <Text style={styles.monthlyPaymentTitle}>Monthly Payment</Text>
-                  <InfoButton note="This is your estimated monthly mortgage payment, including principal and interest, without any extra payments." />
+                  <InfoButton note="This is your estimated monthly mortgage payment, including principal and interest." />
                 </View>
                 <Text style={styles.monthlyPaymentValue}>
                   {formatCurrency(results.monthlyPaymentRegular)}
                 </Text>
                 <Text style={styles.monthlyPaymentLabel}>Regular monthly payment</Text>
+                
                 {hasExtraPayment && (
                   <View style={styles.extraPaymentContainer}>
                     <View style={styles.separator} />
                     {paymentType === 'oneTime' ? (
-                      // For one-time payments, show the upfront cost + monthly payment
                       <View style={styles.oneTimePaymentDisplay}>
-                        <Text style={styles.oneTimeUpfrontLabel}>Upfront Payment:</Text>
+                        <Text style={styles.oneTimeUpfrontLabel}>One-Time Payment:</Text>
                         <Text style={styles.oneTimeUpfrontValue}>
                           {formatCurrency(parseFloat(cleanNumber(extraPayment)))}
                         </Text>
                         <Text style={styles.oneTimePlusLabel}>+</Text>
-                        <Text style={styles.oneTimeMonthlyLabel}>Monthly Payment:</Text>
+                        <Text style={styles.oneTimeMonthlyLabel}>Monthly Payment Stays:</Text>
                         <Text style={styles.extraPaymentValue}>
                           {formatCurrency(results.monthlyPaymentExtra)}
                         </Text>
                         <Text style={styles.extraPaymentLabel}>
-                          Reduced monthly payment after upfront payment
+                          Same monthly payment, but loan pays off {results.timeSavings.years}y {results.timeSavings.months}m earlier
                         </Text>
                       </View>
                     ) : (
-                      // For monthly payments, show the combined monthly payment
                       <>
                         <Text style={styles.extraPaymentValue}>
                           {formatCurrency(results.monthlyPaymentExtra)}
                         </Text>
                         <Text style={styles.extraPaymentLabel}>
-                          With extra monthly payment
+                          With extra monthly payment of {formatCurrency(parseFloat(cleanNumber(extraPayment)))}
                         </Text>
                       </>
                     )}
@@ -357,6 +370,22 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: Colours.text.primary,
   },
+  strategyContainer: {
+    marginBottom: 16,
+  },
+  strategyLabel: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: Colours.text.primary,
+    marginBottom: 8,
+  },
+  strategyDescription: {
+    fontSize: 12,
+    color: Colours.text.secondary,
+    textAlign: 'center',
+    marginTop: 4,
+    fontStyle: 'italic',
+  },
   clearButton: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -444,6 +473,8 @@ const styles = StyleSheet.create({
   extraPaymentLabel: {
     fontSize: 12,
     color: Colours.text.secondary,
+    textAlign: 'center',
+    maxWidth: '90%',
   },
   savingsCards: {
     marginBottom: 16,
