@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "mortgage-saver-app",
+    "name": "OwnItSooner",
     "slug": "mortgage-saver-app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -13,17 +13,27 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.can1cyp2.mortgagesaverapp",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.can1cyp2.mortgagesaverapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "8d8b384c-ae05-4bcf-8210-8deed0935092"
+      }
     }
   }
 }

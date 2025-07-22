@@ -1,4 +1,4 @@
-// Types (keeping the same as before)
+// Types
 export interface LoanInputs {
   loanAmount: number;
   interestRate: number;
@@ -79,7 +79,7 @@ export const calculateMortgage = (inputs: LoanInputs): MortgageResults | null =>
     };
   }
 
-  // Improved amortization simulation
+  // amortization simulation
   function simulateAmortization(
     principal: number, 
     monthlyPayment: number, 
