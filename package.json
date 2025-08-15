@@ -1,14 +1,17 @@
 {
   "name": "OwnItSooner",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.ts",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "build": "expo build",
-    "eject": "expo eject"
+    "whoami": "dotenv -e .env.expo -- eas whoami",
+    "build:ios": "dotenv -e .env.expo -- eas build -p ios",
+    "build:android": "dotenv -e .env.expo -- eas build -p android",
+    "submit:ios": "dotenv -e .env.expo -- eas submit -p ios",
+    "submit:android": "dotenv -e .env.expo -- eas submit -p android"
   },
   "dependencies": {
     "eas-cli": "^16.17.0",
@@ -20,6 +23,7 @@
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@types/react": "~19.0.10",
+    "dotenv-cli": "^10.0.0",
     "typescript": "~5.8.3"
   },
   "private": true
