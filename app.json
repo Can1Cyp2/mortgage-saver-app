@@ -18,7 +18,8 @@
       "bundleIdentifier": "com.can1cyp2.mortgagesaverapp",
       "icon": "./assets/icon.png",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "GADApplicationIdentifier": "ca-app-pub-7846050438990670~2075119407"
       }
     },
     "android": {
@@ -27,7 +28,10 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.can1cyp2.mortgagesaverapp"
+      "package": "com.can1cyp2.mortgagesaverapp",
+      "config": {
+        "googleMobileAdsAppId": "ca-app-pub-7846050438990670~6174679346"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -36,6 +40,15 @@
       "eas": {
         "projectId": "1ef3540c-ec70-4841-a319-20e79d60bd95"
       }
-    }
+    },
+    "plugins": [
+      [
+        "react-native-google-mobile-ads",
+        {
+          "androidAppId": "ca-app-pub-7846050438990670~6174679346",
+          "iosAppId": "ca-app-pub-7846050438990670~2075119407"
+        }
+      ]
+    ]
   }
 }

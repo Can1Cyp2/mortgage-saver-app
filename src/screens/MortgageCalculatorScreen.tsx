@@ -14,6 +14,8 @@ import InputField from '@/components/InputField';
 import ResultCard from '@/components/ResultCard';
 import LoanComparison from '@/components/LoanComparison';
 import InfoButton from '@/components/InfoButton';
+import ProfileButton from '@/components/ProfileButton';
+import ProfileModal from '@/components/ProfileModal';
 import { Colours } from '@/constants/colours';
 import { calculateMortgage, formatCurrency, validateNumericInput } from '@/utils/mortgageCalculations';
 import { MortgageResults } from '@/types';
@@ -39,6 +41,7 @@ const MortgageCalculatorScreen: React.FC = () => {
   const [paymentType, setPaymentType] = useState<'oneTime' | 'monthly'>('oneTime');
   const [oneTimePaymentStrategy, setOneTimePaymentStrategy] = useState<'reducedPayment' | 'shortenedTerm'>('shortenedTerm');
   const [results, setResults] = useState<MortgageResults | null>(null);
+  const [profileModalVisible, setProfileModalVisible] = useState(false);
   const [errors, setErrors] = useState({
     loanAmount: '',
     interestRate: '',
@@ -109,11 +112,16 @@ const MortgageCalculatorScreen: React.FC = () => {
         <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
           {/* Header */}
           <View style={styles.header}>
-            <Ionicons name="calculator" size={32} color={Colours.primary} />
-            <Text style={styles.headerTitle}>Mortgage Calculator</Text>
-            <Text style={styles.headerSubtitle}>
-              Calculate your savings with extra mortgage payments
-            </Text>
+            <View style={styles.headerLeft}>
+              <Ionicons name="calculator" size={32} color={Colours.primary} />
+              <View style={styles.headerText}>
+                <Text style={styles.headerTitle}>Mortgage Calculator</Text>
+                <Text style={styles.headerSubtitle}>
+                  Calculate your savings with extra mortgage payments
+                </Text>
+              </View>
+            </View>
+            <ProfileButton onPress={() => setProfileModalVisible(true)} />
           </View>
 
           {/* Input Section */}
@@ -285,6 +293,12 @@ const MortgageCalculatorScreen: React.FC = () => {
           )}
         </ScrollView>
       </KeyboardAvoidingView>
+      
+      {/* Profile Modal */}
+      <ProfileModal 
+        visible={profileModalVisible} 
+        onClose={() => setProfileModalVisible(false)} 
+      />
     </SafeAreaView>
   );
 };
@@ -302,20 +316,29 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 24,
   },
+  headerLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  headerText: {
+    marginLeft: 12,
+    flex: 1,
+  },
   headerTitle: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: 'bold',
     color: Colours.text.primary,
-    marginTop: 8,
-    marginBottom: 4,
+    marginBottom: 2,
   },
   headerSubtitle: {
-    fontSize: 16,
+    fontSize: 14,
     color: Colours.text.secondary,
-    textAlign: 'center',
   },
   inputSection: {
     backgroundColor: Colours.background.primary,

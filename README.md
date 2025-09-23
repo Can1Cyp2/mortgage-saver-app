@@ -56,10 +56,13 @@ mortgage-saver-app/
 │   │   ├── InfoButton.tsx         # Information display component
 │   │   ├── InputField.tsx         # Form input component
 │   │   ├── LoanComparison.tsx     # Side-by-side comparison component
+│   │   ├── ProfileButton.tsx      # Profile button component
+│   │   ├── ProfileModal.tsx       # Profile modal with navigation
 │   │   └── ResultCard.tsx         # Results display component
 │   ├── constants/                 # App constants
 │   │   └── colours.ts             # Color palette
 │   ├── screens/                   # Screen components
+│   │   ├── AboutScreen.tsx        # About/info screen
 │   │   └── MortgageCalculatorScreen.tsx # Main calculator screen
 │   ├── types/                     # TypeScript type definitions
 │   │   └── index.ts               # Shared types
