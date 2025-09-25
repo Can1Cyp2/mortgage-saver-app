@@ -2,10 +2,11 @@
   "expo": {
     "name": "OwnItSooner",
     "slug": "mortgage-saver-app",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "owner": "99seb",
     "newArchEnabled": true,
     "splash": {
       "image": "./assets/splash-icon.png",
@@ -15,6 +16,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.can1cyp2.mortgagesaverapp",
+      "icon": "./assets/icon.png",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
@@ -32,7 +34,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "8d8b384c-ae05-4bcf-8210-8deed0935092"
+        "projectId": "1ef3540c-ec70-4841-a319-20e79d60bd95"
       }
     }
   }
