@@ -122,7 +122,7 @@ const SupportScreen: React.FC<SupportScreenProps> = ({ onBack }) => {
   const handleOtherSupport = () => {
     Alert.alert(
       '❤️ Other Ways to Support',
-      'You can also support OwnItSooner by:\n\n• Rating the app in the store\n• Sharing with friends\n• Providing feedback\n• Following @Can1Cyp2 on social media',
+      'You can also support OwnItSooner by:\n\n• Rating the app in the store\n• Sharing with friends\n• Providing feedback\n• Following Sebastian Landry on LinkedIn',
       [{ text: 'Got it!' }]
     );
   };

@@ -32,7 +32,7 @@ const AboutScreen: React.FC<AboutScreenProps> = ({ onBack }) => {
               <Ionicons name="calculator" size={48} color={Colours.primary} />
             </View>
             <Text style={styles.appName}>OwnItSooner</Text>
-            <Text style={styles.appVersion}>Version 1.0.1</Text>
+            <Text style={styles.appVersion}>Version 1.0.2</Text>
           </View>
         </View>
 
